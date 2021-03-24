@@ -1,6 +1,7 @@
-import { BaseService } from '@eth-optimism/service-base'
+/* Imports: External */
 import express from 'express'
 import cors from 'cors'
+import { BaseService } from '@eth-optimism/service-base'
 import { NativeCompiler } from 'hardhat/internal/solidity/compiler'
 import { CompilerDownloader } from 'hardhat/internal/solidity/compiler/downloader'
 
