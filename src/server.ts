@@ -2,30 +2,41 @@ import { BaseService } from '@eth-optimism/service-base'
 import express from 'express'
 import cors from 'cors'
 import { NativeCompiler } from 'hardhat/internal/solidity/compiler'
+import { CompilerDownloader } from 'hardhat/internal/solidity/compiler/downloader'
 
 export interface ChugSplashServerOptions {
   port?: number
   hostname?: string
+  compilerCache?: string
 }
 
 export class ChugSplashServer extends BaseService<ChugSplashServerOptions> {
   protected name = 'Chug Splash Server'
-  protected optionSettings: {
+  protected optionSettings = {
     port: {
-      default: 7879
-    }
+      default: 7879,
+    },
     hostname: {
-      default: 'localhost'
-    }
+      default: 'localhost',
+    },
+    compilerCache: {
+      default: './compilers',
+    },
   }
 
   private state: {
     app: express.Express
     server: any
+    downloader: CompilerDownloader
     compiler: NativeCompiler
+    cache: {
+      [solcVersion: string]: boolean
+    }
   } = {} as any
 
   protected async _init(): Promise<void> {
+    this.state.downloader = new CompilerDownloader(this.options.compilerCache)
+    this.state.cache = {}
     this.state.compiler = new NativeCompiler('solc')
     this.state.app = express()
     this.state.app.use(cors())
@@ -96,6 +107,13 @@ export class ChugSplashServer extends BaseService<ChugSplashServerOptions> {
 
   private _registerAllRoutes(): void {
     this._registerRoute('POST', '/compile', async (req: { body: any }) => {
+      if (!this.state.cache[req.body.solcVersion]) {
+        await this.state.downloader.getDownloadedCompilerPath(
+          req.body.solcVersion
+        )
+      }
+      this.state.cache[req.body.solcVersion] = true
+
       return {
         compilerOutput: this.state.compiler.compile({
           solcVersion: req.body.solcVersion,
