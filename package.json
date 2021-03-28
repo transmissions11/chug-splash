@@ -22,7 +22,7 @@
     "build:contracts": "hardhat compile --show-stack-traces",
     "lint": "yarn lint:fix && yarn lint:check",
     "lint:check": "tslint --format stylish --project .",
-    "lint:fix": "prettier --config ./prettier-config.json --write \"{src,test}/**/*.ts\"",
+    "lint:fix": "prettier --config ./prettier-config.json --write \"hardhat.config.ts\" \"{src,test}/**/*.ts\"",
     "clean": "rimraf hardhat *.d.ts *.map *.js tsconfig.tsbuildinfo artifacts cache"
   },
   "peerDependencies": {

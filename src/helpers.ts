@@ -1,53 +1,17 @@
+/* Imports: External */
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import { Contract, ContractFactory, ethers } from 'ethers'
 import { sleep } from '@eth-optimism/core-utils'
 
-interface DeployTransaction {
-  action: 'deploy'
-  contract: string
-  name?: string
-  arguments?: any[]
-  gasLimit: number
-}
-
-interface CallTransaction {
-  action: 'call'
-  target: string
-  function: string
-  arguments?: any[]
-  gasLimit: number
-}
-
-type BundleTransaction = DeployTransaction | CallTransaction
-
-const isDeployTransaction = (
-  tx: BundleTransaction
-): tx is DeployTransaction => {
-  return tx.action === 'deploy'
-}
-
-const isCallTransaction = (tx: BundleTransaction): tx is CallTransaction => {
-  return tx.action === 'call'
-}
-
-interface RawBundleTransaction {
-  to: string | null
-  data: string
-  gasLimit: number
-}
-
-interface CompiledBundleTransaction {
-  nextTransactionHash: string
-  isCreate: boolean
-  target: string
-  gasLimit: number
-  data: string
-}
-
-interface TransactionBundle {
-  hash: string
-  transactions: CompiledBundleTransaction[]
-}
+/* Imports: Internal */
+import {
+  BundleTransaction,
+  CompiledBundleTransaction,
+  isCallTransaction,
+  isDeployTransaction,
+  RawBundleTransaction,
+  TransactionBundle,
+} from './types'
 
 export const getTransactionExecutorFactory = (): ContractFactory => {
   const artifact = require('./artifacts/contracts/TransactionBundleExecutor.sol/TransactionBundleExecutor.json')

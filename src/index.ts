@@ -4,13 +4,13 @@ import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import * as path from 'path'
 import yesno from 'yesno'
 
+/* Imports: Internal */
 import {
   getTransactionExecutorFactory,
   makeRawTransactions,
   makeTransactionBundle,
   waitForBundleApproval,
-} from './deploy'
-
+} from './helpers'
 import './type-extensions'
 
 task('chugsplash-deploy')
