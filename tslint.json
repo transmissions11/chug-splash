@@ -1,3 +1,6 @@
 {
-    "extends": "@eth-optimism/dev/tslint.json"
+    "extends": "@eth-optimism/dev/tslint.json",
+    "rules": {
+        "object-literal-shorthand": false
+    }
 }

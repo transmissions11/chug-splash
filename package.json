@@ -1,27 +1,43 @@
 {
-  "name": "chug-splash",
+  "name": "@eth-optimism/chug-splash",
   "version": "1.0.0",
   "main": "index.js",
+  "types": "index.d.ts",
+  "files": [
+    "*.d.ts",
+    "*.d.ts.map",
+    "*.js",
+    "*.js.map",
+    "LICENSE.txt",
+    "README.md",
+    "contracts/",
+    "artifacts/"
+  ],
+  "license": "MIT",
   "repository": "git@github.com:ethereum-optimism/chug-splash.git",
   "author": "???",
-  "license": "MIT",
   "scripts": {
-    "build": "tsc -p .",
-    "test": "hardhat test --show-stack-traces",
+    "build": "yarn clean && yarn build:contracts && yarn build:typescript",
+    "build:typescript": "tsc --build src",
+    "build:contracts": "hardhat compile --show-stack-traces",
     "lint": "yarn lint:fix && yarn lint:check",
     "lint:check": "tslint --format stylish --project .",
     "lint:fix": "prettier --config ./prettier-config.json --write \"{src,test}/**/*.ts\"",
-    "clean": "rimraf ./artifacts ./cache ./build"
+    "clean": "rimraf hardhat *.d.ts *.map *.js tsconfig.tsbuildinfo artifacts cache"
+  },
+  "peerDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2",
+    "ethers": "^5",
+    "hardhat": "^2"
   },
   "dependencies": {
-    "@eth-optimism/service-base": "^1.1.5",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "hardhat": "^2.0.5",
-    "solc": "0.7.6"
+    "@eth-optimism/core-utils": "^0.1.10",
+    "yesno": "^0.3.1"
   },
   "devDependencies": {
     "@eth-optimism/dev": "^1.1.1",
-    "@types/express": "^4.17.11"
+    "@nomiclabs/hardhat-ethers": "^2.0.2",
+    "ethers": "^5.0.32",
+    "hardhat": "^2.1.2"
   }
 }
