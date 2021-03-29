@@ -20,7 +20,7 @@ function App() {
       action: "deploy",
       contract: "Lib_AddressManager",
       arguments: [],
-      gasLimit: 4000000,
+      gasLimit: 5000000,
     },
     {
       action: "deploy",
