@@ -83,7 +83,7 @@ export const getTransactionHash = (tx: CompiledBundleTransaction): string => {
 export const makeTransactionBundle = (
   raw: RawBundleTransaction[]
 ): TransactionBundle => {
-  let nextTransactionHash = ethers.constants.HashZero
+  let nextTransactionHash = '0x' + '11'.repeat(32) // BUNDLE_TERMINATING_HASH
   const compiledTxs: CompiledBundleTransaction[] = []
   for (const tx of raw.reverse()) {
     const compiledTx: CompiledBundleTransaction = {

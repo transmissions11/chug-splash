@@ -11,6 +11,9 @@ pragma solidity >0.5.0 <0.8.0;
  * (nextTransactionHash) is the hash of the next transaction to be executed. It's a hash onion!
  */
 contract TransactionBundleExecutor {
+    // Constant used to signal that a new bundle can be executed.
+    bytes32 public constant BUNDLE_TERMINATING_HASH = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF;
+
     // Address that can approve new transaction bundles.
     address public owner;
 
@@ -25,6 +28,7 @@ contract TransactionBundleExecutor {
         address _owner
     ) {
         owner = _owner;
+        nextTransactionHash = BUNDLE_TERMINATING_HASH;
     }
 
     /**
@@ -52,10 +56,8 @@ contract TransactionBundleExecutor {
     }
 
     /**
-     * Sets the parent transaction bundle hash. Will completely wipe any reference to any previous
-     * transaction bundle hashes. Any transactions in previous bundles will no longer be executable
-     * by this contract (unless you put the transactions into a new batch). Only callable by the
-     * owner of this contract.
+     * Sets the parent transaction bundle hash. Only callable by the owner of this contract. Can
+     * only be called once the previous bundle has been fully executed.
      * @param _transactionBundleHash Top level hash of the transasction bundle. See contract
      *  description for a more detailed explanation of this hash and its structure.
      */
@@ -65,6 +67,11 @@ contract TransactionBundleExecutor {
         public
         onlyOwner
     {
+        require(
+            nextTransactionHash == BUNDLE_TERMINATING_HASH,
+            "TransactionBundleExecutor: previous bundle has not yet been fully executed"
+        );
+
         nextTransactionHash = _transactionBundleHash;
     }
 
