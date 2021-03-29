@@ -9,6 +9,10 @@ pragma solidity >0.5.0 <0.8.0;
  *  hash(nextTransactionHash, isCreate, target, gasLimit, data)
  * Where the (isCreate, target, gasLimit, data) describe the action to be taken and where
  * (nextTransactionHash) is the hash of the next transaction to be executed. It's a hash onion!
+ * Bundles *must* be terminated with nextTransactionHash == BUNDLE_TERMINATING_HASH. (See below for
+ * exact value of this constant). This allows the contract to recognize that the bundle is finished
+ * and a new bundle can be executed. You **WILL** brick this contract if you fail to include this
+ * terminator in your bundle.
  */
 contract TransactionBundleExecutor {
     // Constant used to signal that a new bundle can be executed.
