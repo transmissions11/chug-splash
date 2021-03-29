@@ -41,7 +41,7 @@ We generate the hash onion from the bundle of transactions that you want to exec
 We'll get to the exact details of the hash onion in a second.
 First we need to describe the basic `chugsplash` transaction structure.
 
-The `TransactionBundleExecutor` can either create a new contract or call an existing contrac*.
+The `TransactionBundleExecutor` can either create a new contract or call an existing contract.
 Each "action" that you want to take is defined by:
 
 ```ts
