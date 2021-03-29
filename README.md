@@ -5,10 +5,23 @@ At the core of `chugsplash` is the idea that a deployment or upgrade should take
 This ideology asks that developers design their deployments carefully and deliberately.
 The reward of doing so is a massive boost to both operational security and long-term maintainability.
 
-## What makes chugsplash useful?
-`chugsplash` is built around the `TransactionBundleExecutor`, a tiny (but special) smart contract.
-The `TransactionBundleExecutor` allows an `owner` to "approve" a bundle of transactions for execution.
-Approving the bundle takes the form of making a very simple contract call to:
+## Another smart contract deployment system????
+Not just any smart contract deployment system. **`chugsplash`**.
+
+## Why should I care?
+Do you want to get rekt? 
+Didn't think so.
+`chugsplash` keeps you from getting rekt.
+
+People get rekt because **securing and managing complex smart contract deployments is hard**.
+But it shouldn't be hard to keep you, your project, and your users safe.
+
+`chugsplash` makes security easy by creating a distinction between transaction *authorization* and transaction *execution*.
+Here at `chugsplash labs` (a totally real company, rest assured) we believe that **deployments and upgrades should take the form of a single, atomic, and highly intentional action**.
+You should know *exactly* what you're about to send off to Ethereum.
+And once you do know what you're going to do, the whole thing should *reliably* happen.
+
+Each `chugsplash` deployment is authorized by a call to:
 
 ```solidity
 function approveTransactionBundle(
@@ -21,6 +34,8 @@ function approveTransactionBundle(
 }
 ```
 
+See that?
+It's you're basically just **signing a single 32 byte hash and it authorizes the entire deployment**.
 `_transactionBundleHash` is a simple 32 byte hash onion commitment to a series of transactions.
 We generate the hash onion from the bundle of transactions that you want to execute during the course of your deployment.
 We'll get to the exact details of the hash onion in a second.
