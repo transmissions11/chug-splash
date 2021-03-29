@@ -104,6 +104,11 @@ nextTransactionHash = _nextTransactionHash;
 ```
 
 And repeat the process all over again!
-Eventually some transaction will have a terminating hash (0x00000... is the recommended one).
+Eventually some transaction will have a terminating hash (we use 0x00000...).
 At this point there's no way to generate a valid transaction to be executed and the bundle is finished.
 Nice.
+
+### Maintaining Atomicity
+One key feature of `TransactionBundleExecutor` is that deployments must be executed completely.
+A new bundle cannot be processed until the previous bundle has been fully executed.
+// sorry I need to finish this readme later.
