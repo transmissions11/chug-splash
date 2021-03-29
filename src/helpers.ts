@@ -13,6 +13,11 @@ import {
   TransactionBundle,
 } from './types'
 
+/**
+ * Creates an ethers TransactionFactory object with the abi and bytecode of the
+ * TransactionBundleExecutor contract.
+ * @returns TransactionBundlExecutor factory.
+ */
 export const getTransactionExecutorFactory = (): ContractFactory => {
   const artifact = require('./artifacts/contracts/TransactionBundleExecutor.sol/TransactionBundleExecutor.json')
   return new ContractFactory(artifact.abi, artifact.bytecode)
@@ -71,6 +76,11 @@ export const makeRawTransactions = async (
   return raw
 }
 
+/**
+ * Computes the chugsplash hash for a bundle transaction.
+ * @param tx Bundle transaction to hash.
+ * @returns Hash of the transaction.
+ */
 export const getTransactionHash = (tx: CompiledBundleTransaction): string => {
   return ethers.utils.keccak256(
     ethers.utils.defaultAbiCoder.encode(
@@ -80,6 +90,7 @@ export const getTransactionHash = (tx: CompiledBundleTransaction): string => {
   )
 }
 
+// rename these functions.
 export const makeTransactionBundle = (
   raw: RawBundleTransaction[]
 ): TransactionBundle => {
